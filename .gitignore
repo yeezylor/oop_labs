@@ -1,0 +1,11 @@
+#cmake
+build/
+
+#vs
+.vs/
+
+#
+*.exe
+*.obj
+*.pdb
+*.ilk

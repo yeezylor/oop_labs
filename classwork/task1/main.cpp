@@ -8,10 +8,12 @@ void foo(Array arr) {
 }
 
 int main() {
-	Array arr1;
+	Array arr1, arr2;
 	arr1.put(2, "100");
 	arr1.put(5, "200");
 	arr1.put(4, "49482");
 
-	foo(arr1);
+	foo(arr2);
+	arr2 = arr1;
+	foo(arr2);
 }

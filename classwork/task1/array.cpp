@@ -1,49 +1,90 @@
 #include "array.h"
 
-Array::Array() {
-    data_ = nullptr;
+Container::Container() {
     size_ = 0;
 }
 
-Array::Array(const Array& arr) : data_(new std::string[arr.size_]) {
-    for (size_t i = 0; i < arr.size_; i++) {
+Container::~Container() {}
+
+void Container::set_size(size_t size) {
+    size_ = size;
+}
+
+std::size_t Container::size() const {
+    return size_;
+}
+
+Array::Array() {
+    data_ = nullptr;
+}   
+
+Array::Array(const Array& arr) : data_(new std::string[size()]) {
+    for (size_t i = 0; i < size(); i++) {
         data_[i] = arr.data_[i];
     }
-    size_ = arr.size_;
+    set_size(arr.size());
 }
 
 Array::~Array() {
     delete[] data_;  
 }
 
-std::size_t Array::size() const {
-    return size_;
+Array& Array::operator=(const Array& arr) {
+    if (this == &arr) {
+        return *this;
+    }
+
+    std::string* new_data = new std::string[arr.size()];
+    for (size_t i = 0; i < arr.size(); i++) {
+        new_data[i] = arr.data_[i];
+    }
+    delete[] data_;
+    data_ = new_data;
+    set_size(arr.size());
+
+    return *this;
+}
+
+std::string& Array::operator[](int ind) const{
+    return data_[ind];
+}
+
+bool Array::operator==(const Array& other) {
+    if (size() != other.size()) {
+        return false;
+    }
+    for (size_t i = 0; i < size(); i++) {
+        if (data_[i] != other.data_[i]) {
+            return false;
+        }
+    }
+    return true;
 }
 
 void Array::clear() {
     delete[] data_;
     data_ = nullptr;
-    size_ = 0;
+    set_size(0);
 }
 
 void Array::put(std::size_t index, std::string value) {
-    if (index >= size_) {
+    if (index >= size()) {
         std::size_t new_size = index + 1;
         std::string* new_data = new std::string[new_size];
 
-        for (std::size_t i = 0; i < size_; i++) {
+        for (std::size_t i = 0; i < size(); i++) {
             new_data[i] = data_[i];
         }
 
         delete[] data_;
         data_ = new_data;
-        size_ = new_size;
+        set_size(new_size);
     }
     data_[index] = value;
 }
 
 std::string Array::get(std::size_t index) {
-    if (index >= size_) {
+    if (index >= size()) {
         return "";
     }
     return data_[index];

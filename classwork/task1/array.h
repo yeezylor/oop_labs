@@ -2,7 +2,16 @@
 
 #include <string>
 
-class Array {
+class Container {
+public:
+    size_t size() const;
+protected:
+    void set_size(size_t size);
+private:
+    size_t size_;
+};
+
+class Array : public Container{
 public:
 
     // конструктор
@@ -13,8 +22,11 @@ public:
     // деструктор
     ~Array();
 
-    // получить текущий размер
-    std::size_t size() const;
+    Array& operator=(const Array& arr);
+
+    std::string& operator[](int ind) const;
+
+    bool operator==(const Array& other);
 
     // очистка, после неё текущий размер = 0
     void clear();
@@ -27,5 +39,4 @@ public:
 
 private:
     std::string* data_; // массив
-    std::size_t size_;  // текущий размер массива (количество элементов)
 };
